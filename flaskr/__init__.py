@@ -6,6 +6,7 @@ from flask import Flask
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
+    #所有的Flask应用都必须有一个应用实例
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
@@ -26,6 +27,7 @@ def create_app(test_config=None):
 
     # a simple page that says hello
     @app.route('/hello')
+    #路由就是沟通URL和函数的桥梁
     def hello():
         return 'Hello, World!'
 
@@ -34,5 +36,9 @@ def create_app(test_config=None):
 
     from . import auth
     app.register_blueprint(auth.bp)
+
+    from . import blog
+    app.register_blueprint(blog.bp)
+    app.add_url_rule('/', endpoint='index')
 
     return app
